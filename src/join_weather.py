@@ -2,10 +2,10 @@ import requests
 import pandas as pd
 import numpy as np
 import time
+import sys
 
-# Make test lat/lon dataframe
-c = {'lat': [36, 36, 37, 37], 'lon': [45, 46, 47, 48]}
-coords = pd.DataFrame(c)
+# c = {'lat': [36, 36, 37, 37], 'lon': [45, 46, 47, 48]}
+# coords = pd.DataFrame(c)
 
 
 def get_nasa(year, latlondf):
@@ -14,6 +14,7 @@ def get_nasa(year, latlondf):
         time.sleep(10)
         lat = latlondf.at[i,'lat']
         lon = latlondf.at[i,'lon']
+        year = latlondf.at[i,'year']
         
         """
         Some Useful Parameters:
@@ -82,9 +83,13 @@ def join_coords(json_list):
 
 
 if __name__ == "__main__":
-    year = 2016
+    # Import lat/lon csv to df
+    coords = pd.read_csv('data/df_lly_test')
+    # Run api request to get nasa power data
     json_list = get_nasa(year, coords)
-    new_df = join_coords(json_list)
+    # Join data onto existin lat/lon dataframe
+    df = join_coords(json_list)
+    df.to_csv(f'data/weather_{year}',index=False)
 
 
 
