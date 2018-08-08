@@ -11,6 +11,7 @@ import sys
 def get_nasa(latlondf):
     json_list = []
     for i in latlondf.index:
+        print('Getting lat/lon:', i+1)
         time.sleep(4)
         lat = latlondf.at[i,'lat']
         lon = latlondf.at[i,'lon']
@@ -84,12 +85,12 @@ def join_coords(json_list):
 
 if __name__ == "__main__":
     # Import lat/lon csv to df
-    coords = pd.read_csv('data/df_lly_test.csv')
+    coords = pd.read_csv('data/lly.csv')
     # Run api request to get nasa power data
     json_list = get_nasa(coords)
     # Join data onto existin lat/lon dataframe
     df = join_coords(json_list)
-    df.to_csv('data/weather_test',index=False)
+    df.to_csv('data/weather.csv',index=False)
 
 
 
